@@ -23,7 +23,7 @@
             </select>
     </div>    
   
-    <app-text-input [formControl]="$any(registerForm.controls['dateOfBirth'])" [lable]="'date of birth'"></app-text-input>
+    <app-date-picker [maxDate]="maxDate"    [formControl]="$any(registerForm.controls['dateOfBirth'])" [lable]="'date of birth'"></app-date-picker>
 
 
     <app-text-input [formControl]="$any(registerForm.controls['knownAs'])" [lable]="'known as'"></app-text-input>
@@ -36,8 +36,17 @@
     
     <app-text-input [formControl]="$any(registerForm.controls['confirmPassword'])" [lable]="'confirm password'" [type]="'password'"></app-text-input>
    
-    
+    <div class="row" *ngIf="validationErrors">
+       <ul class="text-danger"> 
+        <li *ngFor="let error of validationErrors">
+            {{error}}
+        </li>
+    </ul> 
+    </div>
     </form>
-
+    <div class="text-center">
+        <button [disabled]="" class="btn btn-success me-2" type="submit">Register</button>
+        <button class="btn btn-default" type="button" (click)="cancel()">Cancel</button>
+    </div>
     <p>{{this.registerForm.valid | json}}</p>
     <p>{{this.registerForm.value | json}}</p>
