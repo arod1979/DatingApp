@@ -1,18 +1,41 @@
 using System;
+using API.DTOs;
 using API.Entities;
+using API.Helpers;
 using API.Interfaces;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Data;
 
-public class UserRepository(DataContext context) : IUserRepository
+public class UserRepository(DataContext context, IMapper mapper) : IUserRepository
 {
-    public async Task<AppUser?> GetUserByIdAsync(int id)
+    public async Task<MemberDto> GetMemberAsync(string username)
+    {
+        return await context.Users
+        .Where(x => x.UserName == username)
+        .ProjectTo<MemberDto>(mapper.ConfigurationProvider)
+        .SingleOrDefaultAsync();
+
+    }
+
+    public async Task<PagedList<MemberDto>> GetMembersAsync(UserParams userParams)
+    {
+        var query =  context.Users
+        .ProjectTo<MemberDto>(mapper.ConfigurationProvider)
+        .AsNoTracking();
+
+        return await PagedList<MemberDto>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
+
+    }
+
+    public async Task<AppUser> GetUserByIdAsync(int id)
     {
         return await context.Users.FindAsync(id);
     }
 
-    public async Task<AppUser?> GetUserByUsernameAsync(string username)
+    public async Task<AppUser> GetUserByUsernameAsync(string username)
     {
         return await context.Users
         .Include(x => x.Photos)

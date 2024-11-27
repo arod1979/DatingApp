@@ -43,10 +43,11 @@
         </li>
     </ul> 
     </div>
-    </form>
     <div class="text-center">
-        <button [disabled]="" class="btn btn-success me-2" type="submit">Register</button>
+        <button  class="btn btn-success me-2" type="submit">Register</button>
         <button class="btn btn-default" type="button" (click)="cancel()">Cancel</button>
     </div>
+    </form>
+    
     <p>{{this.registerForm.valid | json}}</p>
     <p>{{this.registerForm.value | json}}</p>
