@@ -26,7 +26,7 @@ public class UserRepository(DataContext context, IMapper mapper) : IUserReposito
         .ProjectTo<MemberDto>(mapper.ConfigurationProvider)
         .AsNoTracking();
 
-        return await PagedList<MemberDto>.CreateAsync(query, userParams.PageNumber, userParams.PageSize);
+        return await PagedList<MemberDto>.CreateAsync(query, userParams.pageNumber, userParams.pageSize);
 
     }
 
