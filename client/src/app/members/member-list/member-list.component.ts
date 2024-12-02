@@ -15,12 +15,13 @@ export class MemberListComponent implements OnInit {
     members: Member[] = [];
     pagination: Pagination | undefined;
     pageNumber = 1;
-    pageSize =5;
+    pageSize =10;
     constructor(private memberService: MembersService) {}
 
     ngOnInit(): void {
         //this.members$ = this.memberService.getMembers();
         this.loadMembers();
+        
     }
     
     loadMembers() {
@@ -30,8 +31,15 @@ export class MemberListComponent implements OnInit {
               this.members = response.result;
               this.pagination = response.pagination;
               }
-        }
-    });
-    }
+          }
+        });
+      }
+
+    pageChanged(event:any) {
+      if (this.pageNumber !== event.page) {
+        this.pageNumber = event.page;
+        this.loadMembers();
+      }
+    }  
   
 }
