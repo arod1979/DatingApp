@@ -3,6 +3,7 @@ import { AccountService } from '../_services/account.service';
 import { ToastrService } from 'ngx-toastr';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidatorFn, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Gender } from '../_models/gender';
 
 @Component({
   selector: 'app-register',
@@ -16,15 +17,7 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup = new FormGroup({});
   maxDate: Date = new Date();
   validationErrors: string[] | undefined;
-  genders = [
-      {text: 'man', value: 'man'},
-      {text: 'woman', value: 'woman'},
-      {text: 'Cis man', value: 'Cis man'},
-      {text: 'Cis woman', value: 'Cis woman'},
-      {text: 'Trans woman', value: 'Trans woman'},
-      {text: 'Trans man', value: 'Trans man'},
-      {text: 'Non-binary', value: 'Non-binary'},    
-  ];
+  genders:Gender = new Gender();
 
 
   ngOnInit(): void {

@@ -2,7 +2,7 @@
     <h2 class="text-center text-primary">Sign Up</h2>
     <hr />
 
-    <div class="mb-3">
+    <!-- <div class="mb-3">
         <label style="margin-right:10px">My sex is:</label>
         <label class="form-check-label">
             <input type="radio" class="form-check-input" value="male" formControlName="sex"> Male
@@ -10,14 +10,14 @@
         <label class="form-check-label">
             <input type="radio" class="form-check-input ms-3" value="female" formControlName="sex"> Female
         </label>
-    </div>
+    </div> -->
     
     <app-text-input [formControl]="$any(registerForm.controls['username'])" [lable]="'Username'"></app-text-input>
 
     <div class="mb-3 input-group">
             <span class="input-group-text">Gender</span>
             <select name="gender" id="gender" class="form-control form-check-label " formControlName="gender">  
-                <option *ngFor="let val of genders" 
+                <option *ngFor="let val of genders.genderlist" 
                     [ngValue]="val.value">{{val.text}}
                 </option>
             </select>
