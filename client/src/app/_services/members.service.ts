@@ -110,5 +110,14 @@ export class MembersService {
       return this.http.delete(this.baseurl + 'users/delete-photo/' + photoId);
   }
   
+  addLike(username:string)
+  {
+      return this.http.post(this.baseurl + 'likes/' + username, {})
+  }
+
+  getLikes(predicate:string)
+  {
+    return this.http.get(this.baseurl + 'likes?predicate=' + predicate);
+  }
 
 }
