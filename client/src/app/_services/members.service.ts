@@ -36,6 +36,29 @@ export class MembersService {
     return this.userParams;
   }
 
+  
+  setMainPhoto(photoId:number) 
+  {
+    return this.http.put(this.baseurl + 'users/set-main-photo/' + photoId, {});
+  }
+
+  deletePhoto(photoId:number)
+  {
+      return this.http.delete(this.baseurl + 'users/delete-photo/' + photoId);
+  }
+  
+  addLike(username:string)
+  {
+      return this.http.post(this.baseurl + 'likes/' + username, {})
+  }
+
+  getLikes(predicate:string, pageNumber:number, pageSize:number)
+  {
+    let params = this.getPaginationHeaders(pageNumber,pageSize);
+    params = params.append('predicate', predicate);
+    return this.getPaginatedResult<Member[]>(this.baseurl + 'likes', params);
+  }
+
   getMembers(userParams: UserParams) {
 
     const response = this.memberCache.get(Object.values(userParams).join('-'));
@@ -100,24 +123,5 @@ export class MembersService {
 
   }
 
-  setMainPhoto(photoId:number) 
-  {
-    return this.http.put(this.baseurl + 'users/set-main-photo/' + photoId, {});
-  }
-
-  deletePhoto(photoId:number)
-  {
-      return this.http.delete(this.baseurl + 'users/delete-photo/' + photoId);
-  }
-  
-  addLike(username:string)
-  {
-      return this.http.post(this.baseurl + 'likes/' + username, {})
-  }
-
-  getLikes(predicate:string)
-  {
-    return this.http.get<Member[]>(this.baseurl + 'likes?predicate=' + predicate);
-  }
 
 }
