@@ -1,18 +1,59 @@
 using System;
+using API.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers;
 
-public class AdminController: BaseApiController
+public class AdminController(UserManager<AppUser> userManager) : BaseApiController
 {
+    private readonly UserManager<AppUser> _userManager = userManager;
+
     [Authorize(Policy = "RequireAdminRole")]
     [HttpGet("users-with-roles")]
     public ActionResult GetUsersWithRoles()
     {
-        return Ok("Only Admins Can See this");
+        var users = _userManager.Users
+            .OrderBy(x => x.UserName)
+            .Select(x => new
+            {
+                x.Id,
+                Username = x.UserName,
+                Roles = x.UserRoles.Select(r => r.Role.Name).ToList()
+            }).ToListAsync();
+        return Ok(users);
     }
+
+    [Authorize(Policy = "RequireAdminRole")]
+    [HttpPost("edit-roles/{username}")]
+    public async Task<ActionResult> EditRoles(string username, [FromQuery] string roles)
+    {
+        var selectedRoles = roles.Split(",").ToArray();
+
+        var user = await _userManager.FindByNameAsync(username);
+
+        if (user == null) return NotFound("Could not find user");
+
+        var userRoles = await _userManager.GetRolesAsync(user);
+
+        var result = await _userManager.AddToRolesAsync(user, selectedRoles.Except(userRoles));
+
+        if (!result.Succeeded) return BadRequest("Failed to add to roles");
+
+        result = await _userManager.RemoveFromRolesAsync(user, userRoles.Except(selectedRoles));
+
+        if (!result.Succeeded) return BadRequest("Failed to remove from roles");
+
+        return Ok(await _userManager.GetRolesAsync(user));
+    }
+
+
+
+
+
 
     [Authorize(Policy = "ModeratePhotoRole")]
     [HttpGet("photos-to-moderate")]
