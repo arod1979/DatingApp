@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using API.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -14,9 +15,9 @@ public class AdminController(UserManager<AppUser> userManager) : BaseApiControll
 
     [Authorize(Policy = "RequireAdminRole")]
     [HttpGet("users-with-roles")]
-    public ActionResult GetUsersWithRoles()
+    public async Task<ActionResult> GetUsersWithRoles()
     {
-        var users = _userManager.Users
+        var users = await _userManager.Users
             .OrderBy(x => x.UserName)
             .Select(x => new
             {
