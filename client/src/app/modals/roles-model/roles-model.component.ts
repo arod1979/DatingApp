@@ -9,7 +9,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 export class RolesModelComponent implements OnInit {
    username = "";
    availableRoles: any[] = [];
-   selectedRoles: any[] = [];
+   selectedRoles: string[] = [];
    
    updateChecked(checkedValue: string) {
       const index = this.selectedRoles.indexOf(checkedValue);
