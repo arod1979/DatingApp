@@ -8,7 +8,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
 })
 export class RolesModelComponent implements OnInit {
    username = "";
-   availableRoles: any[] = [];
+   availableRoles: string[] = [];
    selectedRoles: string[] = [];
    
    updateChecked(checkedValue: string) {
