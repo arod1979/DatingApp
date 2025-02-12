@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 
 @Component({
@@ -7,16 +7,21 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
   styleUrls: ['./roles-model.component.css']
 })
 export class RolesModelComponent implements OnInit {
-   username = "";
+   title = "";
    availableRoles: string[] = [];
    selectedRoles: string[] = [];
-   
-   updateChecked(checkedValue: string) {
-      const index = this.selectedRoles.indexOf(checkedValue);
-      index !== -1 ? this.selectedRoles.splice(index, 1):this.selectedRoles.push(checkedValue)
-   }
+   username = '';
    
    constructor(public bsModalRef: BsModalRef) {}
-  ngOnInit(): void {
-  }
+   ngOnInit(): void {
+
+   }
+
+   updateChecked(checkedValue: string) {
+     if (this.selectedRoles.includes(checkedValue)) {
+        this.selectedRoles = this.selectedRoles.filter(r => r !== checkedValue)
+     }else{
+      this.selectedRoles.push(checkedValue);
+     }
+   }
 }

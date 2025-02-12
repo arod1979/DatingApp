@@ -11,12 +11,16 @@ import { AdminService } from 'src/app/_services/admin.service';
 })
 export class UserManagementComponent implements OnInit {
   users: User[]=[];
-  bsModalRef: BsModalRef<RolesModelComponent> = new BsModalRef<RolesModelComponent>;
-  availableRoles = ['Admin', 'Moderator', 'Member'];
+  bsModalRef: BsModalRef<RolesModelComponent> = new BsModalRef<RolesModelComponent>();
+  availableRoles = [
+    'Admin',
+    'Moderator',
+    'Member'
+  ];
   constructor(private adminService: AdminService, private modalService: BsModalService) { }
 
   ngOnInit(): void {
-    this.getUsersWithRoles();
+   this.getUsersWithRoles();
   }
 
   getUsersWithRoles() {
@@ -27,28 +31,28 @@ export class UserManagementComponent implements OnInit {
 
   openRolesModal(user:User) {
     const config = {
-      class:'modal-dialogue-centered',
+      class:'modal-lg',
       initialState:{
-        username:user.username,
-        availableRoles:this.availableRoles,
+        username: user.username,
+        title: 'User roles',
+        availableRoles: this.availableRoles,
         selectedRoles: [...user.roles]
         }
       
       }
     
-    this.bsModalRef = this.modalService.show(RolesModelComponent, config);
-    console.log('apple');
-    this.bsModalRef.onHide?.subscribe(() => {
-      next: () => {console.log('allan');
+      this.bsModalRef = this.modalService.show(RolesModelComponent, config);
+
+      this.bsModalRef.onHide?.subscribe(() => {
         const selectedRoles = this.bsModalRef.content?.selectedRoles;
-        if (!this.arrayEqual(selectedRoles!,user.roles)) {
+        if (!this.arrayEqual(selectedRoles!, user.roles))
+        {
           this.adminService.updateUserRole(user.username, selectedRoles!).subscribe({
-            next: roles => user.roles = roles
+             next: roles => user.roles = roles
           })
         }
-      }
-    })
-  }
+      })
+    }
     private arrayEqual(arr1: any[], arr2: any[])
     {
       return JSON.stringify(arr1.sort()) === JSON.stringify(arr2.sort());
