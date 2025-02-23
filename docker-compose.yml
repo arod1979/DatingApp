@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  mssql:
+    image: mcr.microsoft.com/azure-sql-edge
+    environment:
+      - ACCEPT_EULA=1
+      - MSSQL_SA_PASSWORD=changeMe1!
+    networks:
+      - mynet
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - "1433:1433" 
+
+networks:
+  mynet:
